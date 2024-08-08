@@ -1,22 +1,26 @@
-import { ILayout, ILayoutConfig } from "../layouts/types";
+import type { ILayout, ILayoutConfig } from "../layouts/types";
 import satori from "satori";
-import { Resvg, ResvgRenderOptions } from "@resvg/resvg-js";
+import { Resvg, type ResvgRenderOptions } from "@resvg/resvg-js";
+// biome-ignore lint/style/useNodejsImportProtocol: <explanation>
 import fs from "fs";
-import { SatoriOptions } from "satori";
-import { OG_HEIGHT, OG_WIDTH } from "../constants";
+import type { SatoriOptions } from "satori";
+
+export const config = {
+  runtime: "experimental-edge",
+};
 
 const fonts: SatoriOptions["fonts"] = [
   {
-    name: "Inter",
+    name: "Editorial New",
     style: "normal",
     weight: 400,
-    data: fs.readFileSync("public/fonts/Inter-Regular.ttf"),
+    data: fs.readFileSync("public/fonts/EditorialNew-Thin.ttf"),
   },
   {
-    name: "Inter",
-    style: "bold" as any,
-    weight: 800,
-    data: fs.readFileSync("public/fonts/Inter-Bold.ttf"),
+    name: "Supply",
+    style: "normal",
+    weight: 400,
+    data: fs.readFileSync("public/fonts/supply-regular.ttf"),
   },
 ];
 
@@ -30,8 +34,8 @@ export const renderLayoutToSVG = async ({
   const Component = layout.Component;
 
   const svg = await satori(<Component config={config} />, {
-    width: OG_WIDTH,
-    height: OG_HEIGHT,
+    width: 2400,
+    height: 1260,
     fonts,
   });
 
@@ -41,7 +45,7 @@ export const renderLayoutToSVG = async ({
 const resvgOpts: ResvgRenderOptions = {
   fitTo: {
     mode: "width",
-    value: OG_WIDTH,
+    value: 2400,
   },
   shapeRendering: 2,
   textRendering: 2,

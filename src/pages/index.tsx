@@ -114,17 +114,6 @@ export const Config: React.FC = () => {
   return (
     <div tw="grid gap-4 grid-cols-1 md:grid-cols-2 mt-4 md:mt-8">
       <div tw="space-y-4">
-        <Field>
-          <Label>Layout</Label>
-          <Select
-            value={layoutName}
-            options={layouts.map(l => ({ value: l.name }))}
-            onChange={layoutName => setConfig(c => ({ ...c, layoutName }))}
-          />
-        </Field>
-
-        <hr />
-
         {layout == null ? (
           <p>Layout {layoutName} does not exist</p>
         ) : (
@@ -134,12 +123,6 @@ export const Config: React.FC = () => {
 
       <div tw="space-y-6">
         <div className="buttons" tw="flex space-x-2 justify-end">
-          <button
-            css={[buttonStyles]}
-            onClick={() => copySVG(`${window.location.origin}${svgImageUrl}`)}
-          >
-            {isSVGCopied ? "Copied!" : "Copy SVG Url"}
-          </button>
           <button
             css={[buttonStyles]}
             onClick={() => copyPNG(`${window.location.origin}${pngImageUrl}`)}

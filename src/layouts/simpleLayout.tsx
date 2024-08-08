@@ -1,46 +1,136 @@
-import React from "react";
+import type React from "react";
 import { z } from "zod";
-import { ILayout } from "./types";
+import type { ILayout } from "./types";
 
-const simpleLayoutConfig = z.object({
-  text: z.string(),
-  left: z.string(),
-  right: z.string(),
+const itemConfig = z.object({
+  image_background_hex: z.string().nullable(),
+  imageUrl: z.string(),
+  name: z.string(),
+  brand_name: z.string(),
 });
-export type SimpleLayoutConfig = z.infer<typeof simpleLayoutConfig>;
+export type ItemConfig = z.infer<typeof itemConfig>;
 
-const Component: React.FC<{ config: SimpleLayoutConfig }> = ({ config }) => {
+const Component: React.FC<{ config: ItemConfig }> = ({ config }) => {
   return (
     <div
-      tw="flex items-center justify-center text-center px-4 w-full h-full text-8xl text-white font-bold"
       style={{
-        background: `linear-gradient(to bottom right, ${config.left}, ${config.right})`,
+        position: "relative",
+        height: "100%",
+        width: "100%",
+        display: "flex",
+        textAlign: "center",
+        alignItems: "center",
+        justifyContent: "center",
+        flexDirection: "column",
+        backgroundColor: config.image_background_hex || "#ffffff",
       }}
     >
-      {config.text}
+      {/* biome-ignore lint/a11y/useAltText: <explanation> */}
+      <img
+        src={`https://running.supply/cdn-cgi/image/f=png/${config.imageUrl}`}
+        style={{
+          height: "1200px",
+          width: "1200px",
+          objectFit: "cover",
+          position: "relative",
+          zIndex: "1",
+        }}
+      />
+
+      <div
+        style={{
+          display: "flex",
+          zIndex: "1",
+          flexDirection: "column",
+          position: "absolute",
+          top: "80px",
+          right: "80px",
+        }}
+      >
+        <span
+          style={{
+            fontSize: "36px",
+            display: "flex",
+            marginBottom: "30px",
+            fontStyle: "normal",
+            fontFamily: "'Supply'",
+            color: "black",
+            fontWeight: 100,
+            opacity: 0.25,
+            textTransform: "uppercase",
+            lineHeight: "1",
+            whiteSpace: "pre-wrap",
+          }}
+        >
+          Running Supply
+        </span>
+      </div>
+      <div
+        style={{
+          zIndex: "1",
+          display: "flex",
+          flexDirection: "column",
+          position: "absolute",
+          bottom: "80px",
+          left: "80px",
+        }}
+      >
+        <span
+          style={{
+            fontSize: "36px",
+            display: "flex",
+            marginBottom: "40px",
+            fontStyle: "normal",
+            fontFamily: "'Supply'",
+            color: "black",
+            fontWeight: 100,
+            opacity: 0.25,
+            textTransform: "uppercase",
+            lineHeight: 1,
+          }}
+        >
+          {config.brand_name}
+        </span>
+        <span
+          style={{
+            fontSize: "72px",
+            fontStyle: "normal",
+            fontFamily: "'Editorial New'",
+            color: "black",
+            fontWeight: 100,
+            lineHeight: 1,
+          }}
+        >
+          {config.name}
+        </span>
+      </div>
     </div>
   );
 };
 
-export const simpleLayout: ILayout<typeof simpleLayoutConfig> = {
+export const simpleLayout: ILayout<typeof itemConfig> = {
   name: "simple",
-  config: simpleLayoutConfig,
+  config: itemConfig,
   properties: [
     {
+      name: "name",
       type: "text",
-      name: "text",
-      default: "Hello, world!",
-      placeholder: "Text to display",
+      default: "Pegasus 41",
     },
     {
-      type: "color",
-      name: "left",
-      default: "tomato",
+      name: "image_background_hex",
+      type: "text",
+      default: "#ffffff",
     },
     {
-      type: "color",
-      name: "right",
-      default: "deeppink",
+      name: "imageUrl",
+      type: "text",
+      default: "https://avatars.githubusercontent.com/u/10681116?v=4",
+    },
+    {
+      name: "brand_name",
+      type: "text",
+      default: "Nike",
     },
   ],
   Component,
